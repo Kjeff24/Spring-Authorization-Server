@@ -5,6 +5,23 @@ spring:
       name: user
       password: password
     oauth2:
+      client:
+        registration:
+#          google:
+#            provider: google
+#            client-id: ${google-id}
+#            client-secret: ${google-secret}
+#            scope: openid, https://www.googleapis.com/auth/userinfo.profile, https://www.googleapis.com/auth/userinfo.email
+#            client-name: google-client
+          github:
+            provider: github
+            clientId: ${github-id}
+            clientSecret: ${github-secret}
+            scope: user:email, read:user
+            client-name: github-client
+        provider:
+#          google.user-name-attribute: email
+          github.user-name-attribute: login
       authorizationserver:
         client:
           oidc-client:
