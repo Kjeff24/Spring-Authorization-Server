@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 @Getter
 @RequiredArgsConstructor
 public enum Role {
-    TEACHER(Set.of()),
-    STUDENT(Set.of()),;
+    ADMIN(Set.of()),
+    USER(Set.of()),;
 
     private final Set<Permission> permissions;
 
