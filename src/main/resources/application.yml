@@ -1,5 +1,18 @@
 spring:
   application.name: authorization-server
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
   security:
     user:
       name: user
@@ -7,16 +20,16 @@ spring:
     oauth2:
       client:
         registration:
-#          google:
-#            provider: google
-#            client-id: ${google-id}
-#            client-secret: ${google-secret}
-#            scope: openid, https://www.googleapis.com/auth/userinfo.profile, https://www.googleapis.com/auth/userinfo.email
-#            client-name: google-client
+          google:
+            provider: google
+            client-id: ${GOOGLE_ID}
+            client-secret: ${GOOGLE_SECRET}
+            scope: openid, https://www.googleapis.com/auth/userinfo.profile, https://www.googleapis.com/auth/userinfo.email
+            client-name: google-client
           github:
             provider: github
-            clientId: ${github-id}
-            clientSecret: ${github-secret}
+            clientId: ${GITHUB_ID}
+            clientSecret: ${GITHUB_SECRET}
             scope: user:email, read:user
             client-name: github-client
         provider:
@@ -41,6 +54,10 @@ spring:
                 - "openid"
                 - "profile"
             require-authorization-consent: true
+            token:
+              access-token-time-to-live: 30m
+              refresh-token-time-to-live: 1d
+              reuse-refresh-tokens: true
 
 server:
   port: 8080
