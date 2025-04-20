@@ -1,154 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <meta
-            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
-            name="viewport"
-    />
-    <meta content="ie=edge" http-equiv="X-UA-Compatible" />
-    <link href="/styles/style.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <title>Bexos: Signup</title>
+  <meta charset="UTF-8"/>
+  <meta
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    name="viewport"
+  />
+  <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+  <link href="/styles/style.css" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <title>Bexos: Signup</title>
 </head>
 <body class="bg-black bgGrid">
 <div class="min-h-screen flex items-center justify-center bg-grid">
-    <div
-            class="auth-container bg-gray-900 rounded-xl shadow-lg overflow-hidden"
-    >
-        <!-- Toggle Buttons -->
-        <div class="flex border-b border-gray-800">
-            <a
-                    href="login.html"
-                    id="login-tab"
-                    class="flex-1 py-4 font-medium text-center relative transition-all duration-300 ease-in-out hover:text-violet-400 hover:bg-gray-800/30 focus:outline-none focus:ring-2 focus:ring-violet-600/50 focus:ring-offset-2 focus:ring-offset-gray-900 active:scale-[0.98] active:bg-gray-800/50"
-            >
-                Login
-            </a>
-            <a
-                    href="signup.html"
-                    id="login-tab"
-                    class="flex-1 py-4 px-6 font-medium text-center transition-all duration-200 border-b-2 border-transparent hover:bg-gray-800/30 hover:border-violet-600/50 active:bg-gray-800/50 active:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-600/50 focus:ring-offset-2 focus:ring-offset-gray-900 aria-selected:bg-violet-600/10 aria-selected:border-violet-600 aria-selected:text-violet-400"
-                    aria-selected="true"
-            >
-                Sign Up
-            </a>
+  <div
+    class="auth-container bg-gray-900 rounded-xl shadow-lg overflow-hidden"
+  >
+    <!-- Toggle Buttons -->
+    <div class="flex border-b border-gray-800">
+      <a
+        class="flex-1 py-4 font-medium text-center relative transition-all duration-300 ease-in-out hover:text-violet-400 hover:bg-gray-800/30 focus:outline-none focus:ring-2 focus:ring-violet-600/50 focus:ring-offset-2 focus:ring-offset-gray-900 active:scale-[0.98] active:bg-gray-800/50"
+        th:href="@{/login}"
+      >
+        Login
+      </a>
+      <a
+        aria-selected="true"
+        class="flex-1 py-4 px-6 font-medium text-center transition-all duration-200 border-b-2 border-transparent hover:bg-gray-800/30 hover:border-violet-600/50 active:bg-gray-800/50 active:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-600/50 focus:ring-offset-2 focus:ring-offset-gray-900 aria-selected:bg-violet-600/10 aria-selected:border-violet-600 aria-selected:text-violet-400"
+        th:href="@{/sigup}"
+      >
+        Sign Up
+      </a>
+    </div>
+    <!-- Signup Form (Hidden by default) -->
+    <form class="p-6 space-y-6" id="signup-form">
+      <div>
+        <label
+          class="block text-sm font-medium text-gray-400 mb-1"
+          for="signup-email"
+        >
+          Email
+        </label>
+        <input
+          class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:text-white focus:ring-2 focus:ring-violet-600 focus:outline-none transition"
+          id="signup-email"
+          placeholder="you@example.com"
+          required
+          type="email"
+        />
+      </div>
+
+      <div>
+        <label
+          class="block text-sm font-medium text-gray-400 mb-1"
+          for="signup-username"
+        >
+          Username
+        </label>
+        <input
+          class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:text-white focus:ring-2 focus:ring-violet-600 focus:outline-none transition"
+          id="signup-username"
+          placeholder="yourname"
+          required
+          type="text"
+        />
+      </div>
+
+      <div>
+        <label
+          class="block text-sm font-medium text-gray-400 mb-1"
+          for="signup-password"
+        >
+          Password
+        </label>
+        <input
+          class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:text-white focus:ring-2 focus:ring-violet-600 focus:outline-none transition"
+          id="signup-password"
+          minlength="8"
+          placeholder="••••••••"
+          required
+          type="password"
+        />
+      </div>
+
+      <div>
+        <label
+          class="block text-sm font-medium text-gray-400 mb-1"
+          for="signup-confirm-password"
+        >
+          Confirm Password
+        </label>
+        <input
+          class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:text-white focus:ring-2 focus:ring-violet-600 focus:outline-none transition"
+          id="signup-confirm-password"
+          minlength="8"
+          placeholder="••••••••"
+          required
+          type="password"
+        />
+      </div>
+
+      <button
+        class="w-full py-3 px-4 bg-violet-600 hover:bg-violet-700 rounded-lg font-medium transition"
+        type="submit"
+      >
+        Create Account
+      </button>
+    </form>
+
+    <!-- Social Login Divider -->
+    <div class="px-6 pb-6">
+      <div class="relative">
+        <div class="absolute inset-0 flex items-center">
+          <div class="w-full border-t border-gray-800"></div>
         </div>
-        <!-- Signup Form (Hidden by default) -->
-        <form id="signup-form" class="p-6 space-y-6">
-            <div>
-                <label
-                        for="signup-email"
-                        class="block text-sm font-medium text-gray-400 mb-1"
-                >
-                    Email
-                </label>
-                <input
-                        type="email"
-                        id="signup-email"
-                        class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:text-white focus:ring-2 focus:ring-violet-600 focus:outline-none transition"
-                        placeholder="you@example.com"
-                        required
-                />
-            </div>
-
-            <div>
-                <label
-                        for="signup-username"
-                        class="block text-sm font-medium text-gray-400 mb-1"
-                >
-                    Username
-                </label>
-                <input
-                        type="text"
-                        id="signup-username"
-                        class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:text-white focus:ring-2 focus:ring-violet-600 focus:outline-none transition"
-                        placeholder="yourname"
-                        required
-                />
-            </div>
-
-            <div>
-                <label
-                        for="signup-password"
-                        class="block text-sm font-medium text-gray-400 mb-1"
-                >
-                    Password
-                </label>
-                <input
-                        type="password"
-                        id="signup-password"
-                        class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:text-white focus:ring-2 focus:ring-violet-600 focus:outline-none transition"
-                        placeholder="••••••••"
-                        minlength="8"
-                        required
-                />
-            </div>
-
-            <div>
-                <label
-                        for="signup-confirm-password"
-                        class="block text-sm font-medium text-gray-400 mb-1"
-                >
-                    Confirm Password
-                </label>
-                <input
-                        type="password"
-                        id="signup-confirm-password"
-                        class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:text-white focus:ring-2 focus:ring-violet-600 focus:outline-none transition"
-                        placeholder="••••••••"
-                        minlength="8"
-                        required
-                />
-            </div>
-
-            <button
-                    type="submit"
-                    class="w-full py-3 px-4 bg-violet-600 hover:bg-violet-700 rounded-lg font-medium transition"
-            >
-                Create Account
-            </button>
-        </form>
-
-        <!-- Social Login Divider -->
-        <div class="px-6 pb-6">
-            <div class="relative">
-                <div class="absolute inset-0 flex items-center">
-                    <div class="w-full border-t border-gray-800"></div>
-                </div>
-                <div class="relative flex justify-center text-sm">
+        <div class="relative flex justify-center text-sm">
               <span class="px-2 bg-gray-900 text-gray-500">
                 Or continue with
               </span>
-                </div>
-            </div>
-
-            <div class="mt-6 grid grid-cols-2 gap-3">
-                <button
-                        type="button"
-                        class="flex items-center justify-center py-2 px-4 bg-gray-800 hover:bg-gray-700 rounded-lg transition"
-                >
-                    <img
-                            src="/assets/svg/github.svg"
-                            alt="Google"
-                            class="w-5 h-5 mr-2"
-                    />
-                    Google
-                </button>
-                <button
-                        type="button"
-                        class="flex items-center justify-center py-2 px-4 bg-gray-800 hover:bg-gray-700 rounded-lg transition"
-                >
-                    <img
-                            src="/assets/svg/google.svg"
-                            alt="GitHub"
-                            class="w-5 h-5 mr-2"
-                    />
-                    Twitter
-                </button>
-            </div>
         </div>
+      </div>
+
+      <div class="mt-6 grid grid-cols-2 gap-3">
+        <a
+          class="flex items-center justify-center py-2 px-4 bg-gray-800 hover:bg-gray-700 rounded-lg transition"
+          href="/oauth2/authorization/github"
+          type="button"
+        >
+          <img
+            alt="Google"
+            class="w-5 h-5 mr-2"
+            src="/assets/github.svg"
+          />
+          GitHub
+        </a>
+        <a
+          class="flex items-center justify-center py-2 px-4 bg-gray-800 hover:bg-gray-700 rounded-lg transition"
+          href="/oauth2/authorization/google"
+          type="button"
+        >
+          <img
+            alt="GitHub"
+            class="w-5 h-5 mr-2"
+            src="/assets/google.svg"
+          />
+          Google
+        </a>
+      </div>
     </div>
+  </div>
 </div>
 </body>
 </html>
