@@ -1,9 +1,10 @@
 package com.bexos.authorization_server.models;
 
-import com.bexos.authorization_server.enums.Permission;
 import com.bexos.authorization_server.enums.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,11 +19,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Collections;
 
 @Getter
 @Setter
@@ -43,18 +40,13 @@ public class User implements UserDetails {
     private String password;
     private String pictureUrl;
     private boolean isEnabled;
+    @Enumerated(EnumType.STRING)
     private Role role;
-    private Set<Permission> permissions = new HashSet<>();
     private String provider;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> permissionAuthorities = getPermissions().stream()
-                .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
-                .toList();
-
-        return Stream.concat(role.getAuthorities().stream(), permissionAuthorities.stream())
-                .collect(Collectors.toSet());
+        return Collections.singleton(new SimpleGrantedAuthority(role.toString()));
     }
 
     @Override

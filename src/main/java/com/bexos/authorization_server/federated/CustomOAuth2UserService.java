@@ -27,6 +27,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(userRequest);
         String provider = userRequest.getClientRegistration().getRegistrationId();
 
+        log.info("Loading user {}", oAuth2User);
+
         if (!"github".equalsIgnoreCase(provider)) {
             throw new OAuth2AuthenticationException("Unsupported OAuth2 provider: " + provider);
         }
@@ -45,7 +47,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String email = (String) oAuth2User.getAttribute("email");
         String userEmail = email != null ? email : login + "@github.com";
 
-        return userRepository.findByEmail(userEmail)
+        return userRepository.findByEmailIgnoreCase(userEmail)
                 .orElseGet(() -> {
                     User newUser = User.builder()
                             .email(oAuth2User.getAttribute("email"))

@@ -39,7 +39,7 @@ public class CustomOidcUserService extends OidcUserService {
 
     private User processOidcUser(OidcUser oidcUser, String provider) {
         String email = oidcUser.getEmail();
-        return userRepository.findByEmail(email)
+        return userRepository.findByEmailIgnoreCase(email)
                 .orElseGet(() -> {
                     User newUser = User.builder()
                             .email(oidcUser.getEmail())
