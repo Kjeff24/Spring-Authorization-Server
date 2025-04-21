@@ -12,124 +12,136 @@
   <title>Bexos: Login</title>
 </head>
 <body class="bg-black bgGrid">
+
+
 <div class="min-h-screen flex items-center justify-center bg-grid">
-  <div
-    class="auth-container bg-gray-900 rounded-xl shadow-lg overflow-hidden"
-  >
-    <!-- Toggle Buttons -->
-    <div class="flex border-b border-gray-800">
-      <a
-        aria-selected="true"
-        class="flex-1 py-4 px-6 font-medium text-center transition-all duration-200 border-b-2 border-transparent hover:bg-gray-800/30 hover:border-violet-600/50 active:bg-gray-800/50 active:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-600/50 focus:ring-offset-2 focus:ring-offset-gray-900
-            aria-selected:bg-violet-600/10 aria-selected:border-violet-600 aria-selected:text-violet-400"
-        th:href="@{/login}"
-      >
-        Login
-      </a>
-      <a
-        class="flex-1 py-4 font-medium text-center relative transition-all duration-300 ease-in-out hover:text-violet-400 hover:bg-gray-800/30 focus:outline-none focus:ring-2 focus:ring-violet-600/50 focus:ring-offset-2 focus:ring-offset-gray-900 active:scale-[0.98] active:bg-gray-800/50"
-        th:href="@{/signup}"
-      >
-        Sign Up
-      </a>
+  <div>
+    <!-- Error Message -->
+    <div class="bg-red-600 text-white px-4 py-2 rounded-lg mb-4 text-sm text-center" th:if="${errorMessage}" th:text="${errorMessage}">
     </div>
 
-    <!-- Login Form -->
-    <form class="p-6 space-y-6" id="login-form">
-      <div>
-        <label
-          class="block text-sm font-medium text-gray-400 mb-1"
-          for="login-identifier"
+    <!-- Logout Message -->
+    <div class="bg-green-600 text-white px-4 py-2 rounded-lg mb-4 text-sm text-center" th:if="${param.logout}">
+      You've been logged out successfully
+    </div>
+    <div class="auth-container bg-gray-900 rounded-xl shadow-lg overflow-hidden">
+      <!-- Toggle Buttons -->
+      <div class="flex border-b border-gray-800">
+        <a
+          aria-selected="true"
+          class="flex-1 py-4 px-6 font-medium text-center transition-all duration-200 border-b-2 border-transparent hover:bg-gray-800/30 hover:border-violet-600/50 active:bg-gray-800/50 active:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-600/50 focus:ring-offset-2 focus:ring-offset-gray-900
+            aria-selected:bg-violet-600/10 aria-selected:border-violet-600 aria-selected:text-violet-400"
+          th:href="@{/login}"
         >
-          Email or Username
-        </label>
-        <input
-          class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:text-white focus:ring-2 focus:ring-violet-600 focus:outline-none transition"
-          id="login-identifier"
-          placeholder="you@example.com"
-          required
-          type="text"
-        />
-      </div>
-
-      <div>
-        <label
-          class="block text-sm font-medium text-gray-400 mb-1"
-          for="login-password"
+          Login
+        </a>
+        <a
+          class="flex-1 py-4 font-medium text-center relative transition-all duration-300 ease-in-out hover:text-violet-400 hover:bg-gray-800/30 focus:outline-none focus:ring-2 focus:ring-violet-600/50 focus:ring-offset-2 focus:ring-offset-gray-900 active:scale-[0.98] active:bg-gray-800/50"
+          th:href="@{/signup}"
         >
-          Password
-        </label>
-        <input
-          class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:text-white focus:ring-2 focus:ring-violet-600 focus:outline-none transition"
-          id="login-password"
-          placeholder="••••••••"
-          required
-          type="password"
-        />
-      </div>
-
-      <div class="flex items-center justify-between">
-        <div class="flex items-center">
-          <input
-            class="w-4 h-4 bg-gray-800 border-gray-700 rounded focus:ring-violet-600"
-            id="remember-me"
-            type="checkbox"
-          />
-          <label class="ml-2 text-sm text-gray-400" for="remember-me">
-            Remember me
-          </label>
-        </div>
-        <a class="text-sm text-violet-400 hover:underline" href="#">
-          Forgot password?
+          Sign Up
         </a>
       </div>
 
-      <button
-        class="w-full py-3 px-4 bg-violet-600 hover:bg-violet-700 rounded-lg font-medium transition"
-        type="submit"
-      >
-        Login
-      </button>
-    </form>
-
-    <!-- Social Login Divider -->
-    <div class="px-6 pb-6">
-      <div class="relative">
-        <div class="absolute inset-0 flex items-center">
-          <div class="w-full border-t border-gray-800"></div>
+      <!-- Login Form -->
+      <form class="p-6 space-y-6" id="login-form" method="post" th:action="@{/login}">
+        <div>
+          <label
+            class="block text-sm font-medium text-gray-400 mb-1"
+            for="username"
+          >
+            Email or Username
+          </label>
+          <input
+            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:text-white focus:ring-2 focus:ring-violet-600 focus:outline-none transition"
+            id="username"
+            name="username"
+            placeholder="you@example.com or your-username"
+            required
+            type="text"
+          />
         </div>
-        <div class="relative flex justify-center text-sm">
+
+        <div>
+          <label
+            class="block text-sm font-medium text-gray-400 mb-1"
+            for="password"
+          >
+            Password
+          </label>
+          <input
+            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:text-white focus:ring-2 focus:ring-violet-600 focus:outline-none transition"
+            id="password"
+            name="password"
+            placeholder="••••••••"
+            required
+            type="password"
+          />
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <input
+              class="w-4 h-4 bg-gray-800 border-gray-700 rounded focus:ring-violet-600"
+              id="remember-me"
+              type="checkbox"
+            />
+            <label class="ml-2 text-sm text-gray-400" for="remember-me">
+              Remember me
+            </label>
+          </div>
+          <a class="text-sm text-violet-400 hover:underline" href="#">
+            Forgot password?
+          </a>
+        </div>
+
+        <button
+          class="w-full py-3 px-4 bg-violet-600 hover:bg-violet-700 rounded-lg font-medium transition"
+          type="submit"
+        >
+          Login
+        </button>
+      </form>
+
+      <!-- Social Login Divider -->
+      <div class="px-6 pb-6">
+        <div class="relative">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-800"></div>
+          </div>
+          <div class="relative flex justify-center text-sm">
               <span class="px-2 bg-gray-900 text-gray-500">
                 Or continue with
               </span>
+          </div>
         </div>
-      </div>
 
-      <div class="mt-6 grid grid-cols-2 gap-3">
-        <a
-          class="flex items-center justify-center py-2 px-4 bg-gray-800 hover:bg-gray-700 rounded-lg transition"
-          href="/oauth2/authorization/github"
-          type="button"
-        >
-          <img
-            alt="Google"
-            class="w-5 h-5 mr-2"
-            src="/assets/github.svg"
-          />
-          GitHub
-        </a>
-        <a
-          class="flex items-center justify-center py-2 px-4 bg-gray-800 hover:bg-gray-700 rounded-lg transition"
-          href="/oauth2/authorization/google"
-          type="button"
-        >
-          <img
-            alt="GitHub"
-            class="w-5 h-5 mr-2"
-            src="/assets/google.svg"
-          />
-          Google
-        </a>
+        <div class="mt-6 grid grid-cols-2 gap-3">
+          <a
+            class="flex items-center justify-center py-2 px-4 bg-gray-800 hover:bg-gray-700 rounded-lg transition"
+            href="/oauth2/authorization/github"
+            type="button"
+          >
+            <img
+              alt="Google"
+              class="w-5 h-5 mr-2"
+              src="/assets/github.svg"
+            />
+            GitHub
+          </a>
+          <a
+            class="flex items-center justify-center py-2 px-4 bg-gray-800 hover:bg-gray-700 rounded-lg transition"
+            href="/oauth2/authorization/google"
+            type="button"
+          >
+            <img
+              alt="GitHub"
+              class="w-5 h-5 mr-2"
+              src="/assets/google.svg"
+            />
+            Google
+          </a>
+        </div>
       </div>
     </div>
   </div>
