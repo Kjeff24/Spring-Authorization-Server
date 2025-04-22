@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -46,8 +45,8 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public String formRegister(@ModelAttribute("user") SignupRequest signupRequest, RedirectAttributes redirectAttributes) {
-        authService.createUser(signupRequest, redirectAttributes);
+    public String formRegister(@ModelAttribute("user") SignupRequest signupRequest, Model model) {
+        authService.createUser(signupRequest, model);
         return "signup";
     }
 }

@@ -6,8 +6,9 @@ import com.bexos.authorization_server.repositories.UserRepository;
 import com.bexos.authorization_server.services.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.ui.Model;
 
 import java.util.regex.Pattern;
 
@@ -16,6 +17,7 @@ import java.util.regex.Pattern;
 public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
     private static final String PASSWORD_PATTERN =
             "^(?=.*[0-9])" +
@@ -27,28 +29,30 @@ public class AuthServiceImpl implements AuthService {
 
     private static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
 
-    public void createUser(SignupRequest signupRequest, RedirectAttributes redirectAttributes) {
+    public void createUser(SignupRequest signupRequest, Model model) {
 
         if (!signupRequest.getPassword().equals(signupRequest.getConfirmPassword())) {
-            redirectAttributes.addAttribute(
+            model.addAttribute(
                     "errorMessage",
                     "Passwords do not match. Please try again.");
         } else if (!isValidPassword(signupRequest.getPassword())) {
-            redirectAttributes.addAttribute(
+            model.addAttribute(
                     "errorMessage",
                     "Password must be at least 8 characters long and include a combination of uppercase letters, lowercase letters, special characters, and numbers.");
 
         } else if (userRepository.existsByEmailIgnoreCase(signupRequest.getEmail())) {
-            redirectAttributes.addAttribute("errorMessage", "User with this email already exists.");
+            model.addAttribute("errorMessage", "User with this email already exists.");
 
         } else if (userRepository.existsByUsernameIgnoreCase(signupRequest.getUsername())) {
-            redirectAttributes.addAttribute("errorMessage", "User with this username already exists.");
+            model.addAttribute("errorMessage", "User with this username already exists.");
 
         } else {
-            userRepository.save(modelMapper.map(signupRequest, User.class));
-            redirectAttributes.addAttribute(
+            User user = modelMapper.map(signupRequest, User.class);
+            user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+            userRepository.save(user);
+            model.addAttribute(
                     "successMessage",
-                    "Registration was successful, verification email has been sent to your account.");
+                    "Registration was successful.");
 
         }
     }
