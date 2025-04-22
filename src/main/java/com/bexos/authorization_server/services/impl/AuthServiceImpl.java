@@ -28,16 +28,21 @@ public class AuthServiceImpl implements AuthService {
     private static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
 
     public void createUser(SignupRequest signupRequest, RedirectAttributes redirectAttributes) {
-        if (userRepository.existsByEmailIgnoreCase(signupRequest.getEmail())) {
-            redirectAttributes.addAttribute("errorMessage", "User with this email already exists.");
 
-        } else if (userRepository.existsByUsernameIgnoreCase(signupRequest.getUsername())) {
-            redirectAttributes.addAttribute("errorMessage", "User with this username already exists.");
-
+        if (!signupRequest.getPassword().equals(signupRequest.getConfirmPassword())) {
+            redirectAttributes.addAttribute(
+                    "errorMessage",
+                    "Passwords do not match. Please try again.");
         } else if (!isValidPassword(signupRequest.getPassword())) {
             redirectAttributes.addAttribute(
                     "errorMessage",
                     "Password must be at least 8 characters long and include a combination of uppercase letters, lowercase letters, special characters, and numbers.");
+
+        } else if (userRepository.existsByEmailIgnoreCase(signupRequest.getEmail())) {
+            redirectAttributes.addAttribute("errorMessage", "User with this email already exists.");
+
+        } else if (userRepository.existsByUsernameIgnoreCase(signupRequest.getUsername())) {
+            redirectAttributes.addAttribute("errorMessage", "User with this username already exists.");
 
         } else {
             userRepository.save(modelMapper.map(signupRequest, User.class));
