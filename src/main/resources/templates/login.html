@@ -12,14 +12,11 @@
   <title>Bexos: Login</title>
 </head>
 <body class="bg-black bgGrid">
-
-
 <div class="min-h-screen flex items-center justify-center bg-grid">
   <div>
     <!-- Error Message -->
     <div class="bg-red-600 text-white px-4 py-2 rounded-lg mb-4 text-sm text-center" th:if="${errorMessage}" th:text="${errorMessage}">
     </div>
-
     <!-- Logout Message -->
     <div class="bg-green-600 text-white px-4 py-2 rounded-lg mb-4 text-sm text-center" th:if="${param.logout}">
       You've been logged out successfully
@@ -96,7 +93,7 @@
         </div>
 
         <button
-          class="w-full py-3 px-4 bg-violet-600 hover:bg-violet-700 rounded-lg font-medium transition"
+          class="w-full py-3 px-4 bg-violet-600 hover:bg-violet-700 rounded-lg font-medium transition cursor-pointer"
           type="submit"
         >
           Login

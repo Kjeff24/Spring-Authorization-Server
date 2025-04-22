@@ -13,6 +13,13 @@
 </head>
 <body class="bg-black bgGrid">
 <div class="min-h-screen flex items-center justify-center bg-grid">
+  <div>
+  <!-- Error Message -->
+  <div class="bg-red-600 text-white px-4 py-2 rounded-lg mb-4 text-sm text-center" th:if="${errorMessage}" th:text="${errorMessage}">
+  </div>
+  <!--    Success Message -->
+  <div class="bg-green-600 text-white px-4 py-2 rounded-lg mb-4 text-sm text-center" th:if="${successMessage}" th:text="${successMessage}">
+  </div>
   <div
     class="auth-container bg-gray-900 rounded-xl shadow-lg overflow-hidden"
   >
@@ -33,7 +40,7 @@
       </a>
     </div>
     <!-- Signup Form (Hidden by default) -->
-    <form class="p-6 space-y-6" id="signup-form" method="post" th:action="@{/login}" th:object="${user}">
+    <form class="p-6 space-y-6" id="signup-form" method="post" th:action="@{/signup}" th:object="${user}">
       <div>
         <label
           class="block text-sm font-medium text-gray-400 mb-1"
@@ -122,7 +129,7 @@
       </div>
 
       <button
-        class="w-full py-3 px-4 bg-violet-600 hover:bg-violet-700 rounded-lg font-medium transition"
+        class="w-full py-3 px-4 bg-violet-600 hover:bg-violet-700 rounded-lg font-medium transition cursor-pointer"
         type="submit"
       >
         Create Account
@@ -169,6 +176,7 @@
         </a>
       </div>
     </div>
+  </div>
   </div>
 </div>
 </body>
