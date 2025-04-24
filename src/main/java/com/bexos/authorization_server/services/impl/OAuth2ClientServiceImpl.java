@@ -18,6 +18,7 @@ import org.springframework.security.oauth2.server.authorization.settings.TokenSe
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -65,6 +66,16 @@ public class OAuth2ClientServiceImpl implements RegisteredClientRepository, OAut
                 .requireAuthorizationConsent(clientRequest.isRequireProofKey())
                 .build();
         return modelMapper.map(clientRepository.save(client), OAuth2ClientResponse.class);
+    }
+
+    public List<OAuth2ClientResponse> findAllClients() {
+        return clientRepository.findAll().stream().map((element) -> modelMapper.map(element, OAuth2ClientResponse.class))
+                .toList();
+    }
+
+    public OAuth2ClientResponse findByOAuth2ClientId(String clientId) {
+        return modelMapper.map(clientRepository.findByClientId(clientId)
+                .orElseThrow(() -> new NotFoundException("Client with id " + clientId + " not found. Please check your client id and try again.")), OAuth2ClientResponse.class);
     }
 
     private RegisteredClient toRegisteredClient(OAuth2Client client) {
