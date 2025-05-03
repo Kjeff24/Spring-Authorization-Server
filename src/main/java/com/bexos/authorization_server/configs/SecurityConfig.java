@@ -1,6 +1,7 @@
 package com.bexos.authorization_server.configs;
 
 import com.bexos.authorization_server.federated.CustomOAuth2UserService;
+import com.bexos.authorization_server.federated.CustomOidcUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
@@ -20,34 +20,39 @@ import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-//    private UserRepository userRepository;
-//    private CustomOAuth2UserService customOAuth2UserService;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomOidcUserService customOidcUserService;
 
     @Bean
     @Order(1)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http)
             throws Exception {
-        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-        http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-                .oidc(Customizer.withDefaults());    // Enable OpenID Connect 1.0
+        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
+                OAuth2AuthorizationServerConfigurer.authorizationServer();
+
         http
-                // Redirect to the OAuth 2.0 Login endpoint when not authenticated
-                // from the authorization endpoint
+                .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+                .with(authorizationServerConfigurer, (authorizationServer) ->
+                        authorizationServer
+                                .oidc(Customizer.withDefaults())
+                )
+                .authorizeHttpRequests((authorize) ->
+                        authorize
+                                .anyRequest().authenticated()
+                )
                 .exceptionHandling((exceptions) -> exceptions
                         .defaultAuthenticationEntryPointFor(
-                                new LoginUrlAuthenticationEntryPoint("/oauth2/authorization/my-client"),
+                                new LoginUrlAuthenticationEntryPoint("/login"),
                                 new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
                         )
-                )
-                // Accept access tokens for User Info and/or Client Registration
-                .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
+                );
 
         return http.build();
     }
 
     @Bean
     @Order(2)
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, CustomOAuth2UserService customOAuth2UserService)
+    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
             throws Exception {
         http
                 .authorizeHttpRequests((authorize) -> authorize
@@ -56,7 +61,8 @@ public class SecurityConfig {
                 .formLogin(Customizer.withDefaults())
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo
-                                .userService(customOAuth2UserService)  // Configure your custom OAuth2UserService here
+                                .userService(customOAuth2UserService)
+                                .oidcUserService(customOidcUserService)
                         )
                 );
         return http.build();
